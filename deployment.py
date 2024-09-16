@@ -27,10 +27,10 @@ from sklearn.preprocessing import LabelEncoder
 
 st.title("International football results from 1872 to 2024")
 
-# pip install -r C:\Users\Admin\OneDrive\Desktop\ML\ml_Football\requirements.txt
-# python -m streamlit run C:\Users\Admin\OneDrive\Desktop\ML\ml_Football\deployment.py
+# pip install -r requirements.txt
+# python -m streamlit run deployment.py
 
-combined_df_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/combined_df.csv"
+combined_df_path = "combined_df.csv"
 # Read the CSV file into a DataFrame
 combined_df = pd.read_csv(combined_df_path)
 
@@ -38,11 +38,11 @@ st.write("Dataset records:")
 st.write(combined_df)
 
 # Load the LabelEncoder from the file
-loaded_label_encoder_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/label_encoder.pkl"
+loaded_label_encoder_path = "label_encoder.pkl"
 loaded_label_encoder = joblib.load(loaded_label_encoder_path)
 
 # Load the StandardScaler from the file
-loaded_scaler_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/standard_scaler.pkl"
+loaded_scaler_path = "standard_scaler.pkl"
 loaded_scaler = joblib.load(loaded_scaler_path)
 
 
@@ -640,11 +640,11 @@ user_input_df = get_user_input()
 ###============================================================================================================================
 
 # Paths to saved models
-birch_tsne_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/birch_tsne_model.pkl"
-scaler_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/standard_scaler.pkl"
-combined_df_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/combined_df.csv"
-tsne_model_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/tsne_model.pkl"
-# label_encoded_path = "C:/Users/Admin/OneDrive/Desktop/ML/ml_Football/label_encoder.pkl"
+birch_tsne_path = "birch_tsne_model.pkl"
+scaler_path = "standard_scaler.pkl"
+combined_df_path = "combined_df.csv"
+tsne_model_path = "tsne_model.pkl"
+# label_encoded_path = "label_encoder.pkl"
 
 # Load the KMeans model and the StandardScaler
 tsne_file = joblib.load(tsne_model_path)
@@ -694,7 +694,13 @@ if user_input_df is not None:
     team_encoded_list = filtered_df['Team_encoded'].tolist()
 
     # Apply t-SNE transformation to the scaled combined dataset
-    tsne_result = tsne_file.fit_transform(user_input_combined_df[tsne_features])
+    # tsne_result = tsne_file.fit_transform(user_input_combined_df[tsne_features])
+
+    
+    tsne = TSNE(n_components=2, random_state=42, n_iter=1000)  # Adjust parameters as needed
+
+    # Apply t-SNE transformation to the scaled combined dataset
+    tsne_result = tsne.fit_transform(user_input_combined_df[tsne_features])
     
     # Create a DataFrame for the t-SNE results
     df_tsne = pd.DataFrame(tsne_result, columns=['t-SNE1', 't-SNE2'])
